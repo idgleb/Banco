@@ -5,12 +5,18 @@ public abstract class Cuenta {
     private int cbu;
     private double saldo;
     private Cliente cliente;
+    private TipoCuenta tipo;
     private List<Transaccion> transacciones = new ArrayList<>();
 
-    public Cuenta(int cbu, double saldo, Cliente cliente) {
+    public Cuenta(int cbu, double saldo, Cliente cliente, TipoCuenta tipo) {
         this.cbu = cbu;
         this.saldo = saldo;
         this.cliente = cliente;
+        this.tipo = tipo;
+    }
+
+    public TipoCuenta getTipo() {
+        return tipo;
     }
 
     public double getSaldo() {
@@ -62,11 +68,9 @@ public abstract class Cuenta {
 
     @Override
     public String toString() {
-        return "Cuenta{" +
+        return "  Cuenta " + tipo + "{" +
                 "cbu=" + cbu +
                 ", saldo=" + saldo +
-                ", cliente=" + cliente +
-                ", transacciones=" + transacciones +
                 "}\n";
     }
 
