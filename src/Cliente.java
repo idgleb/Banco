@@ -50,7 +50,7 @@ public class Cliente {
                         JOptionPane.showMessageDialog(null,"Tu saldo es " + cuenta.getSaldo());
                         break;
                     case 1:
-                        JOptionPane.showMessageDialog(null,"Historia de cuenta "+ cuenta+ " es \n" + cuenta.historiaTransacciones());
+                        JOptionPane.showMessageDialog(null,"Historia de cuenta "+ cuenta+ " \n" + cuenta.historiaTransacciones());
                         break;
                     case 2:
                         cuenta.depositar();

@@ -104,7 +104,7 @@ public class MisFunciones {
         do {
             str = JOptionPane.showInputDialog(null, msg);
             if (str == null) return null;
-        } while (str.isEmpty());
+        } while (str.trim().isEmpty());
         return str;
     }
 
