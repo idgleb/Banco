@@ -66,13 +66,6 @@ public class Cliente {
 
         }while (true);
 
-
-
-
-
-
-
-
     }
 
     public String getNombre() {
