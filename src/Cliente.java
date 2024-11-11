@@ -50,7 +50,6 @@ public class Cliente {
         return "Cliente{" +
                 "nombre='" + nombre + '\'' +
                 ", dni=" + dni +
-                ", banco=" + banco +
                 ", cuentas=" + cuentas +
                 "}\n";
     }

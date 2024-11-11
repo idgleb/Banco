@@ -1,5 +1,13 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println(MisFunciones.pedirDoubleMasCero("Ingrese el monto para retirar:"));
+
+        Banco banco = new Banco("ddd");
+
+        banco.buscarCliente();
+
+        banco.registrarCliente();
+
+        banco.modificarCliente();
+
     }
 }

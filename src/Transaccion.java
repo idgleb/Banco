@@ -1,15 +1,17 @@
 import java.time.LocalDateTime;
 
 public class Transaccion {
-    private double monto;
     private LocalDateTime fecha;
+    private double monto;
     private TipoTransaccion tipo;
+    private String comment;
     private Cuenta cuenta;
 
-    public Transaccion(double monto, LocalDateTime fecha, TipoTransaccion tipo, Cuenta cuenta) {
-        this.monto = monto;
+    public Transaccion(double monto, TipoTransaccion tipo, String comment, Cuenta cuenta) {
         this.fecha = LocalDateTime.now();
+        this.monto = monto;
         this.tipo = tipo;
+        this.comment = comment;
         this.cuenta = cuenta;
     }
 
@@ -45,12 +47,20 @@ public class Transaccion {
         this.cuenta = cuenta;
     }
 
+    public String getComment() {
+        return comment;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Transaccion{" +
-                "monto=" + monto +
-                ", fecha=" + fecha +
+                "fecha=" + fecha +
+                ", monto=" + monto +
                 ", tipo=" + tipo +
+                ", comment='" + comment + '\'' +
                 ", cuenta=" + cuenta +
                 "}\n";
     }
