@@ -1,2 +1,3 @@
-public class TipoCuenta {
+public  enum TipoCuenta {
+    CORRIENTE, AHORRO
 }
