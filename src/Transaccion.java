@@ -15,6 +15,14 @@ public class Transaccion {
         this.cuenta = cuenta;
     }
 
+    public Transaccion(LocalDateTime fecha, double monto, TipoTransaccion tipo, String comment, Cuenta cuenta) {
+        this.fecha = fecha;
+        this.monto = monto;
+        this.tipo = tipo;
+        this.comment = comment;
+        this.cuenta = cuenta;
+    }
+
     public double getMonto() {
         return monto;
     }

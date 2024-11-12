@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,9 +16,9 @@ public class Banco {
 
     public void registrarCliente() {
         String nombre = MisFunciones.pedirStrNoVacio("Ingrese el nombre del cliente: ");
-        if (nombre==null) return;
+        if (nombre == null) return;
         int dni = MisFunciones.pedirNumeroMasCero("Ingrese el DNI: ");
-        if (dni==-1) return;
+        if (dni == -1) return;
 
         Cliente cliente = new Cliente(nombre, dni, this);
         clientes.add(cliente);
@@ -51,7 +52,7 @@ public class Banco {
         }
         if (ModCliente.values()[modCliente] == ModCliente.NOMBRE) {
             String nombre = MisFunciones.pedirStrNoVacio("Ingrese nuevo nombre del cliente: ");
-            if (nombre==null) return;
+            if (nombre == null) return;
             cliente.setNombre(nombre);
             JOptionPane.showMessageDialog(null, "nombre Corregido");
         }
@@ -145,6 +146,30 @@ public class Banco {
 
         }
 
+    }
+
+    public Object crearCuenta(TipoCuenta tipoCuenta, int cbu, Cliente cliente) {
+
+        if (buscarCBU(cbu)) {
+
+            JOptionPane.showMessageDialog(null, "El CBU ya existe");
+
+        } else {
+
+            if (tipoCuenta == TipoCuenta.AHORRO) {
+                Ahorro cuenta = new Ahorro(cbu, 0, cliente, 10, 1000);
+                cliente.getCuentas().add(cuenta);
+                return cuenta;
+            }
+
+            if (tipoCuenta== TipoCuenta.CORRIENTE) {
+                Corriente cuenta = new Corriente(cbu, 0, cliente);
+                cliente.getCuentas().add(cuenta);
+                return cuenta;
+            }
+
+        }
+        return null;
 
     }
 
@@ -164,11 +189,13 @@ public class Banco {
                         JOptionPane.showMessageDialog(null, "No hay clientes");
                         break;
                     }
-                    int idCliente = JOptionPane.showOptionDialog(null, "Elige el cliente", "Elige el cliente",
-                            0, 0, null, clientes.toArray(), 0);
-                    reporte = clientes.get(idCliente) + "\n";
-                    for (Cuenta cuenta : clientes.get(idCliente).getCuentas()) {
-                        for (Transaccion tr:cuenta.getTransacciones()) {
+                    Cliente cliente = (Cliente) MisFunciones.eligirObjDeLista(clientes);
+                    if (cliente == null) break;
+
+                    reporte = cliente + "\n";
+                    for (Cuenta cuenta : cliente.getCuentas()) {
+                        reporte += cuenta + "\n";
+                        for (Transaccion tr : cuenta.getTransacciones()) {
                             reporte = reporte + tr + "\n";
                         }
 
@@ -180,6 +207,16 @@ public class Banco {
                         JOptionPane.showMessageDialog(null, "No hay clientes");
                         break;
                     }
+
+                    LocalDate fechaDesde = MisFunciones.pedirFechaMenosDeAhora("engrese Desde");
+                    if (fechaDesde == null) break;
+
+                    LocalDate fechaHasta = MisFunciones.pedirFechaMasDeOtraFecha(fechaDesde,"engrese Hasta");
+                    if (fechaHasta == null) break;
+
+                    JOptionPane.showMessageDialog(null, "El fecha fechaDesde es " + fechaDesde);
+                    JOptionPane.showMessageDialog(null, "El fecha hasta es " + fechaHasta);
+
                     break;
                 case 2:
                     if (clientes.isEmpty()) {

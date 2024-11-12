@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +38,13 @@ public abstract class Cuenta {
     }
 
     public abstract void depositar();
+    public abstract void depositar(double monto, LocalDateTime fecha);
 
     public abstract void retirar();
+    public abstract void retirar(double monto, LocalDateTime fecha);
 
     public abstract void transferir();
+    public abstract void transferir(int cbu, double monto, LocalDateTime fecha);
 
     public int getCbu() {
         return cbu;
