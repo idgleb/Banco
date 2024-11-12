@@ -15,7 +15,10 @@ public class Banco {
 
     public void registrarCliente() {
         String nombre = MisFunciones.pedirStrNoVacio("Ingrese el nombre del cliente: ");
+        if (nombre==null) return;
         int dni = MisFunciones.pedirNumeroMasCero("Ingrese el DNI: ");
+        if (dni==-1) return;
+
         Cliente cliente = new Cliente(nombre, dni, this);
         clientes.add(cliente);
 
@@ -42,11 +45,13 @@ public class Banco {
 
         if (ModCliente.values()[modCliente] == ModCliente.DNI) {
             int dni = MisFunciones.pedirNumeroMasCero("Ingrese el nuevo DNI: ");
+            if (dni == -1) return;
             cliente.setDni(dni);
             JOptionPane.showMessageDialog(null, "DNI Corregido");
         }
         if (ModCliente.values()[modCliente] == ModCliente.NOMBRE) {
             String nombre = MisFunciones.pedirStrNoVacio("Ingrese nuevo nombre del cliente: ");
+            if (nombre==null) return;
             cliente.setNombre(nombre);
             JOptionPane.showMessageDialog(null, "nombre Corregido");
         }
@@ -144,7 +149,48 @@ public class Banco {
     }
 
     public void reporteGeneralClientesCuentas() {
-        JOptionPane.showMessageDialog(null, reporte());
+
+        String[] opc = {"reporte por Cliente", "reporte por Fecha", "reporte por Cliente y Fecha"};
+
+        ImageIcon icon = new ImageIcon("res/report.png");
+        int opcion = 0;
+        String reporte = "";
+        do {
+            opcion = JOptionPane.showOptionDialog(null, reporte, null,
+                    0, 0, icon, opc, 0);
+            switch (opcion) {
+                case 0:
+                    if (clientes.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No hay clientes");
+                        break;
+                    }
+                    int idCliente = JOptionPane.showOptionDialog(null, "Elige el cliente", "Elige el cliente",
+                            0, 0, null, clientes.toArray(), 0);
+                    reporte = clientes.get(idCliente) + "\n";
+                    for (Cuenta cuenta : clientes.get(idCliente).getCuentas()) {
+                        for (Transaccion tr:cuenta.getTransacciones()) {
+                            reporte = reporte + tr + "\n";
+                        }
+
+                    }
+
+                    break;
+                case 1:
+                    if (clientes.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No hay clientes");
+                        break;
+                    }
+                    break;
+                case 2:
+                    if (clientes.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No hay clientes");
+                        break;
+                    }
+                    //
+                    break;
+            }
+        } while (opcion != -1);
+
     }
 
     public String reporte() {

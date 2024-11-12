@@ -8,10 +8,11 @@ public class Main {
         String[] opc = {"registrarCliente", "buscarCliente", "modificarCliente",
                 "crearCuenta", "reporteGeneral", "para clientes"};
 
+        ImageIcon icon = new ImageIcon("res/banco.png");
         int opcion = 0;
         do {
             opcion = JOptionPane.showOptionDialog(null, banco.reporte(), null,
-                    0, 0, null, opc, 0);
+                    0, 0, icon, opc, 0);
             switch (opcion) {
                 case 0:
                     banco.registrarCliente();

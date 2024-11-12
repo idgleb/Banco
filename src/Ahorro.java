@@ -45,12 +45,15 @@ public class Ahorro extends Cuenta {
             Transaccion transaccion = new Transaccion(monto, tipoTransaccion, comment, this);
             this.getTransacciones().add(transaccion);
 
+            JOptionPane.showMessageDialog(null, "Retiraste "+monto+" con exito. Tambien pagaste interes: " + montoInteres);
+
         } else JOptionPane.showMessageDialog(null, "Saldo insuficiente para retirar");
     }
 
     @Override
     public void transferir() {
         int cbu = MisFunciones.pedirNumeroMasCero("Ingrese el CBU de destino:");
+        if (cbu == -1) return;
         //chequear si hay este CBU en banco
         if (this.getCliente().getBanco().buscarCBU(cbu)) {
             if (cbu==this.getCbu()){
@@ -66,7 +69,7 @@ public class Ahorro extends Cuenta {
                 Cuenta cuentaDestino = this.getCliente().getBanco().getCuentaPorCBU(cbu);
                 this.setSaldo(getSaldo() - monto-montoInteres);
                 TipoTransaccion tipoTransaccion = TipoTransaccion.TRANSFERENCIA;
-                String comment = "a " + cuentaDestino.getCliente().getNombre()+ "(CBU: " + cbu +") interes" + montoInteres;
+                String comment = "a " + cuentaDestino.getCliente().getNombre()+ "(CBU: " + cbu +") interes -" + montoInteres;
                 Transaccion transaccion = new Transaccion(monto, tipoTransaccion, comment, this);
                 this.getTransacciones().add(transaccion);
 
@@ -74,6 +77,8 @@ public class Ahorro extends Cuenta {
                 comment = "de " + this.getCliente().getNombre() + "(CBU: " + this.getCbu() + ")";
                 transaccion = new Transaccion(monto, tipoTransaccion, comment, cuentaDestino);
                 cuentaDestino.getTransacciones().add(transaccion);
+
+                JOptionPane.showMessageDialog(null, "Transferiste "+monto+" con exito. Tambien pagaste interes: " + montoInteres);
 
             } else JOptionPane.showMessageDialog(null, "Saldo insuficiente para transferir");
         } else JOptionPane.showMessageDialog(null, "CBU no existe");

@@ -56,10 +56,10 @@ public class Transaccion {
 
     @Override
     public String toString() {
-        return "    Transaccion{" +
-                "fecha=" + fecha.getHour() + ":" + fecha.getMinute() + ":" + fecha.getSecond() +
+        return "             Transaccion{" +
+                "fecha=" + fecha.getDayOfMonth() + "/" + fecha.getMonthValue() + "/" + fecha.getYear() + " " + fecha.getHour() + ":" + fecha.getMinute() + ":" + fecha.getSecond() +
                 ", monto=" + monto +
-                ", " + tipo + " " + comment + '\'' +
+                ", " + tipo + " " + comment  +
                 "}\n";
     }
 }

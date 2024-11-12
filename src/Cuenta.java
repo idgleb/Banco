@@ -68,7 +68,7 @@ public abstract class Cuenta {
 
     @Override
     public String toString() {
-        return "  Cuenta " + tipo + "{" +
+        return "     Cuenta " + tipo + "{" +
                 "cbu=" + cbu +
                 ", saldo=" + saldo +
                 "}\n";

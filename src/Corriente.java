@@ -40,7 +40,7 @@ public class Corriente extends Cuenta {
     @Override
     public void transferir() {
         int cbu = MisFunciones.pedirNumeroMasCero("Ingrese el CBU de destino:");
-
+        if (cbu == -1) return;
         if (this.getCliente().getBanco().buscarCBU(cbu)) {
             if (cbu==this.getCbu()){
                 JOptionPane.showMessageDialog(null, "No podes transferir a mismo CBU");
@@ -62,6 +62,8 @@ public class Corriente extends Cuenta {
                 comment = "de " + this.getCliente().getNombre() + "(CBU: " + this.getCbu() + ")";
                 transaccion = new Transaccion(monto, tipoTransaccion, comment, cuentaDestino);
                 cuentaDestino.getTransacciones().add(transaccion);
+
+                JOptionPane.showMessageDialog(null, "Transferiste "+monto+" con exito.");
 
             } else JOptionPane.showMessageDialog(null, "Saldo insuficiente para transferir");
         } else JOptionPane.showMessageDialog(null, "CBU no existe");
