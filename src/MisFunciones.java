@@ -4,7 +4,6 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /*
@@ -78,7 +77,7 @@ public class MisFunciones {
                 }
             }
             double num = Double.parseDouble(str);
-            if (num < 0) return false;
+            if (num <= 0) return false;
         }
         return true;
     }
@@ -110,74 +109,100 @@ public class MisFunciones {
         return str;
     }
 
-    public static LocalDate pedirFechaMasDeHoy(String msg, String msgError) {
-        LocalDate fechaEntr;
-        do {
-            fechaEntr = LocalDate.parse(JOptionPane.showInputDialog(null, msg));
-            if (fechaEntr.isBefore(LocalDate.now())) {
-                JOptionPane.showMessageDialog(null, msgError);
-            }
-        } while (fechaEntr.isBefore(LocalDate.now()));
-        return fechaEntr;
-    }
-
-    public static LocalDate pedirFechaMenosDeAhora(String msg) {
-
+    public static LocalDate pedirFechaMasIgualDeHoy(String msg) {
         LocalDate fechaEntr = null;
         boolean isFormatoDate;
-        boolean isFechaMenosDeAhora;
+        boolean isFechaMasIgualDeAhora;
         boolean isFechaExiste;
 
         do {
             String fechaStr = JOptionPane.showInputDialog(null, msg + ". Formato: yyyy-MM-dd");
             isFormatoDate = true;
-            isFechaMenosDeAhora = true;
+            isFechaMasIgualDeAhora = true;
             isFechaExiste =true;
 
             if (fechaStr != null && !fechaStr.trim().isEmpty()) {
 
-                if (fechaStr.length() == 10) {
-                    for (int i = 0; i < fechaStr.length(); i++) {
-                        boolean isUnDigit = (fechaStr.charAt(i) >= '0' && fechaStr.charAt(i) <= '9');
-                        if (i < 4 && !isUnDigit) isFormatoDate = false;
-                        if (i == 4 && fechaStr.charAt(i) != '-') isFormatoDate = false;
-                        if (i > 4 && i < 7 && !isUnDigit) isFormatoDate = false;
-                        if (i == 7 && fechaStr.charAt(i) != '-') isFormatoDate = false;
-                        if (i > 7 && i < 10 && !isUnDigit) isFormatoDate = false;
-                    }
-                }else isFormatoDate = false;
+                isFormatoDate = isFormatoDate(fechaStr);
 
+                if (isFormatoDate) {
+                    if (isFechaExiste(fechaStr)) {
+                        fechaEntr = LocalDate.parse(fechaStr);
+                        if (fechaEntr.isBefore(LocalDate.now())) {
+                            JOptionPane.showMessageDialog(null, "fecha no puede ser en pasado");
+                            isFechaMasIgualDeAhora = false;
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Fecha no existe");
+                        isFechaExiste = false;
+                    }
+                } else JOptionPane.showMessageDialog(null, "Formato no correcto");
+            }
+
+        } while (!isFechaMasIgualDeAhora || !isFormatoDate || !isFechaExiste);
+
+        return fechaEntr;
+    }
+
+    public static LocalDate pedirFechaMenosIgualDeAhora(String msg) {
+
+        LocalDate fechaEntr = null;
+        boolean isFormatoDate;
+        boolean isFechaMenosIgualDeAhora;
+        boolean isFechaExiste;
+
+        do {
+            String fechaStr = JOptionPane.showInputDialog(null, msg + ". Formato: yyyy-MM-dd");
+            isFormatoDate = true;
+            isFechaMenosIgualDeAhora = true;
+            isFechaExiste =true;
+
+            if (fechaStr != null && !fechaStr.trim().isEmpty()) {
+
+                isFormatoDate = isFormatoDate(fechaStr);
 
                 if (isFormatoDate) {
                     if (isFechaExiste(fechaStr)) {
                         fechaEntr = LocalDate.parse(fechaStr);
                         if (fechaEntr.isAfter(LocalDate.now())) {
                             JOptionPane.showMessageDialog(null, "fecha no puede ser en futuro");
-                            isFechaMenosDeAhora = false;
+                            isFechaMenosIgualDeAhora = false;
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Fecha no existe");
                         isFechaExiste = false;
                     }
-
-
                 } else JOptionPane.showMessageDialog(null, "Formato no correcto");
             }
 
-
-        } while (!isFechaMenosDeAhora || !isFormatoDate || !isFechaExiste);
+        } while (!isFechaMenosIgualDeAhora || !isFormatoDate || !isFechaExiste);
 
         return fechaEntr;
 
     }
 
-    public static LocalDate pedirFechaMasDeOtraFecha(LocalDate otraFecha, String msg) {
+    public static boolean isFormatoDate(String fechaStr) {
+        boolean isFormatoDate = true;
+        if (fechaStr.length() == 10) {
+            for (int i = 0; i < fechaStr.length(); i++) {
+                boolean isUnDigit = (fechaStr.charAt(i) >= '0' && fechaStr.charAt(i) <= '9');
+                if (i < 4 && !isUnDigit) isFormatoDate = false;
+                if (i == 4 && fechaStr.charAt(i) != '-') isFormatoDate = false;
+                if (i > 4 && i < 7 && !isUnDigit) isFormatoDate = false;
+                if (i == 7 && fechaStr.charAt(i) != '-') isFormatoDate = false;
+                if (i > 7 && i < 10 && !isUnDigit) isFormatoDate = false;
+            }
+        }else isFormatoDate = false;
+        return isFormatoDate;
+    }
+
+    public static LocalDate pedirFechaMasIgualDeOtraFecha(LocalDate otraFecha, String msg) {
         LocalDate fecha;
         do {
-            fecha = pedirFechaMenosDeAhora(msg);
+            fecha = pedirFechaMenosIgualDeAhora(msg);
             if (fecha==null) return null;
             if (fecha.isBefore(otraFecha)) {
-                JOptionPane.showMessageDialog(null, "la fecha debe ser mayor que la fecha previa");
+                JOptionPane.showMessageDialog(null, "la fecha Haste no puede ser antes de la fecha Desde");
             }
         } while (fecha.isBefore(otraFecha));
         return fecha;
@@ -209,7 +234,7 @@ public class MisFunciones {
         }
     }
 
-    private static boolean isFechaExiste(String fechaStr) {
+    public static boolean isFechaExiste(String fechaStr) {
         String[] partes = fechaStr.split("-");
         int year = Integer.parseInt(partes[0]);
         int month = Integer.parseInt(partes[1]);

@@ -8,14 +8,13 @@ public class Main {
 
         llenarDatos(banco);
 
-
         String[] opc = {"registrarCliente", "buscarCliente", "modificarCliente",
                 "crearCuenta", "reporteGeneral", "para clientes"};
 
         ImageIcon icon = new ImageIcon("res/banco.png");
         int opcion = 0;
         do {
-            opcion = JOptionPane.showOptionDialog(null, banco.reporte(), null,
+            opcion = JOptionPane.showOptionDialog(null, banco.reporteGeneral(), null,
                     0, 0, icon, opc, 0);
             switch (opcion) {
                 case 0:
@@ -60,11 +59,12 @@ public class Main {
         cuenta1.retirar(550, LocalDateTime.of(2024, 9, 13, 11, 22));
         cuenta.depositar(3300, LocalDateTime.of(2024, 9, 13, 11, 30));
         cuenta.depositar(1000, LocalDateTime.of(2024, 9, 13, 11, 55));
-        cuenta.retirar(400, LocalDateTime.of(2024, 9, 13, 11, 56));
-        cuenta.transferir(321, 250, LocalDateTime.of(2024, 9, 13, 12, 11));
-        cuenta1.transferir(123, 770, LocalDateTime.of(2024, 9, 13, 22, 1));
-        cuenta1.depositar(360, LocalDateTime.of(2024, 9, 14, 12, 22));
-        cuenta1.depositar(900, LocalDateTime.of(2024, 9, 14, 14, 11));
+        cuenta.retirar(400, LocalDateTime.of(2024, 9, 14, 11, 56));
+        cuenta.transferir(321, 250, LocalDateTime.of(2024, 9, 14, 12, 11));
+        cuenta1.transferir(123, 770, LocalDateTime.of(2024, 9, 15, 22, 1));
+        cuenta1.depositar(360, LocalDateTime.of(2024, 9, 15, 12, 22));
+        cuenta1.depositar(900, LocalDateTime.of(2024, 9, 16, 14, 11));
+
     }
 }
 

@@ -185,55 +185,104 @@ public class Banco {
                     0, 0, icon, opc, 0);
             switch (opcion) {
                 case 0:
-                    if (clientes.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "No hay clientes");
-                        break;
-                    }
-                    Cliente cliente = (Cliente) MisFunciones.eligirObjDeLista(clientes);
-                    if (cliente == null) break;
-
-                    reporte = cliente + "\n";
-                    for (Cuenta cuenta : cliente.getCuentas()) {
-                        reporte += cuenta + "\n";
-                        for (Transaccion tr : cuenta.getTransacciones()) {
-                            reporte = reporte + tr + "\n";
-                        }
-
-                    }
-
+                    reporte = reportePorCliente();
                     break;
                 case 1:
-                    if (clientes.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "No hay clientes");
-                        break;
-                    }
-
-                    LocalDate fechaDesde = MisFunciones.pedirFechaMenosDeAhora("engrese Desde");
-                    if (fechaDesde == null) break;
-
-                    LocalDate fechaHasta = MisFunciones.pedirFechaMasDeOtraFecha(fechaDesde, "engrese Hasta");
-                    if (fechaHasta == null) break;
-
-                    reporte = reporte(fechaDesde, fechaHasta);
-
-
-                    //JOptionPane.showMessageDialog(null, "El fecha fechaDesde es " + fechaDesde);
-                    //JOptionPane.showMessageDialog(null, "El fecha hasta es " + fechaHasta);
-
+                    reporte = reportePorFecha();
                     break;
                 case 2:
-                    if (clientes.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "No hay clientes");
-                        break;
-                    }
-                    //
+                    reporte = reportePorClienteFecha();
                     break;
             }
         } while (opcion != -1);
 
     }
 
-    public String reporte() {
+    private String reportePorClienteFecha() {
+        if (clientes.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes");
+            return null;
+        }
+        Cliente cliente = (Cliente) MisFunciones.eligirObjDeLista(clientes);
+        if (cliente == null) return null;
+
+        LocalDate fechaDesde = MisFunciones.pedirFechaMenosIgualDeAhora("Engrese fecha Desde");
+        if (fechaDesde == null) return null;
+
+        LocalDate fechaHasta = MisFunciones.pedirFechaMasIgualDeOtraFecha(fechaDesde, "Engrese fecha Hasta");
+        if (fechaHasta == null) return null;
+
+        String reporte = reportePorClienteFecha(cliente, fechaDesde, fechaHasta);
+
+        return reporte;
+    }
+
+    private String reportePorClienteFecha(Cliente cliente, LocalDate fechaDesde, LocalDate fechaHasta) {
+
+        String reporte = "";
+
+        List<Transaccion> transaccions = getTransaccionesCliente(cliente);
+
+        ordenarTransacciones(transaccions);
+
+        for (Transaccion transaccion : transaccions) {
+            if (transaccion.getFecha().toLocalDate().isAfter(fechaDesde) || transaccion.getFecha().toLocalDate().isEqual(fechaDesde)) {
+                if (transaccion.getFecha().toLocalDate().isBefore(fechaHasta) || transaccion.getFecha().toLocalDate().isEqual(fechaHasta)) {
+                    reporte += transaccion.getInfo() + "\n";
+                }
+            }
+
+        }
+
+        return reporte;
+    }
+
+    private List<Transaccion> getTransaccionesCliente(Cliente cliente) {
+        List<Transaccion> transacciones = new ArrayList<>();
+
+        for (Cuenta cuenta : cliente.getCuentas()) {
+            transacciones.addAll(cuenta.getTransacciones());
+        }
+
+        return transacciones;
+    }
+
+    private String reportePorFecha() {
+
+        if (clientes.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes");
+            return null;
+        }
+
+        LocalDate fechaDesde = MisFunciones.pedirFechaMenosIgualDeAhora("Engrese fecha Desde");
+        if (fechaDesde == null) return null;
+
+        LocalDate fechaHasta = MisFunciones.pedirFechaMasIgualDeOtraFecha(fechaDesde, "Engrese fecha Hasta");
+        if (fechaHasta == null) return null;
+
+        return reportePorFecha(fechaDesde, fechaHasta);
+    }
+
+    private String reportePorCliente() {
+        if (clientes.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes");
+            return null;
+        }
+        Cliente cliente = (Cliente) MisFunciones.eligirObjDeLista(clientes);
+        if (cliente == null) return null;
+
+        String reporte = cliente + "\n";
+        for (Cuenta cuenta : cliente.getCuentas()) {
+            reporte += cuenta + "\n";
+            for (Transaccion tr : cuenta.getTransacciones()) {
+                reporte = reporte + tr + "\n";
+            }
+
+        }
+        return reporte;
+    }
+
+    public String reporteGeneral() {
         String reporte = "";
         for (Cliente cliente : clientes) {
             reporte += cliente + " \n";
@@ -247,7 +296,7 @@ public class Banco {
         return reporte;
     }
 
-    public String reporte(LocalDate fechaDesde, LocalDate fechaHasta) {
+    public String reportePorFecha(LocalDate fechaDesde, LocalDate fechaHasta) {
 
         String reporte = "";
 
@@ -256,8 +305,8 @@ public class Banco {
         ordenarTransacciones(transaccions);
 
         for (Transaccion transaccion : transaccions) {
-            if (transaccion.getFecha().toLocalDate().isAfter(fechaDesde) || transaccion.getFecha().toLocalDate().isEqual(fechaDesde)){
-                if (transaccion.getFecha().toLocalDate().isBefore(fechaHasta) || transaccion.getFecha().toLocalDate().isEqual(fechaHasta)){
+            if (transaccion.getFecha().toLocalDate().isAfter(fechaDesde) || transaccion.getFecha().toLocalDate().isEqual(fechaDesde)) {
+                if (transaccion.getFecha().toLocalDate().isBefore(fechaHasta) || transaccion.getFecha().toLocalDate().isEqual(fechaHasta)) {
                     reporte += transaccion.getInfo() + "\n";
                 }
             }
