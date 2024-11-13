@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Banco {
@@ -162,7 +162,7 @@ public class Banco {
                 return cuenta;
             }
 
-            if (tipoCuenta== TipoCuenta.CORRIENTE) {
+            if (tipoCuenta == TipoCuenta.CORRIENTE) {
                 Corriente cuenta = new Corriente(cbu, 0, cliente);
                 cliente.getCuentas().add(cuenta);
                 return cuenta;
@@ -211,11 +211,14 @@ public class Banco {
                     LocalDate fechaDesde = MisFunciones.pedirFechaMenosDeAhora("engrese Desde");
                     if (fechaDesde == null) break;
 
-                    LocalDate fechaHasta = MisFunciones.pedirFechaMasDeOtraFecha(fechaDesde,"engrese Hasta");
+                    LocalDate fechaHasta = MisFunciones.pedirFechaMasDeOtraFecha(fechaDesde, "engrese Hasta");
                     if (fechaHasta == null) break;
 
-                    JOptionPane.showMessageDialog(null, "El fecha fechaDesde es " + fechaDesde);
-                    JOptionPane.showMessageDialog(null, "El fecha hasta es " + fechaHasta);
+                    reporte = reporte(fechaDesde, fechaHasta);
+
+
+                    //JOptionPane.showMessageDialog(null, "El fecha fechaDesde es " + fechaDesde);
+                    //JOptionPane.showMessageDialog(null, "El fecha hasta es " + fechaHasta);
 
                     break;
                 case 2:
@@ -243,6 +246,75 @@ public class Banco {
         }
         return reporte;
     }
+
+    public String reporte(LocalDate fechaDesde, LocalDate fechaHasta) {
+
+        String reporte = "";
+
+        List<Transaccion> transaccions = getTransacciones();
+
+        ordenarTransacciones(transaccions);
+
+        for (Transaccion transaccion : transaccions) {
+            if (transaccion.getFecha().toLocalDate().isAfter(fechaDesde) || transaccion.getFecha().toLocalDate().isEqual(fechaDesde)){
+                if (transaccion.getFecha().toLocalDate().isBefore(fechaHasta) || transaccion.getFecha().toLocalDate().isEqual(fechaHasta)){
+                    reporte += transaccion.getInfo() + "\n";
+                }
+            }
+
+        }
+
+        return reporte;
+    }
+
+    private List<Transaccion> getTransacciones() {
+
+        List<Transaccion> transacciones = new ArrayList<>();
+
+        for (Cliente cliente : clientes) {
+            for (Cuenta cuenta : cliente.getCuentas()) {
+                transacciones.addAll(cuenta.getTransacciones());
+            }
+        }
+        return transacciones;
+
+    }
+
+    private Transaccion sacarTransaccioneMasVieja(List<Transaccion> transacciones) {
+
+        LocalDateTime fechaMasVieja = null;
+
+        fechaMasVieja = transacciones.get(0).getFecha();
+
+        int idElement = 0;
+
+        for (int i = 1; i < transacciones.size(); i++) {
+            if (transacciones.get(i).getFecha().isBefore(fechaMasVieja)) {
+                fechaMasVieja = transacciones.get(i).getFecha();
+                idElement = i;
+            }
+        }
+
+        Transaccion transaccionMasVieja = transacciones.get(idElement);
+
+        transacciones.remove(idElement);
+
+        return transaccionMasVieja;
+
+    }
+
+    public void ordenarTransacciones(List<Transaccion> transacciones) {
+
+        List<Transaccion> transaccionesOrdenadas = new ArrayList<>();
+
+        while (!transacciones.isEmpty()) {
+            transaccionesOrdenadas.add(sacarTransaccioneMasVieja(transacciones));
+        }
+
+        transacciones.addAll(transaccionesOrdenadas);
+
+    }
+
 
     public boolean buscarCBU(int cbu) {
         for (Cliente cliente : clientes) {

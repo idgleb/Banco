@@ -62,6 +62,15 @@ public class Transaccion {
         this.comment = comment;
     }
 
+    public String getInfo(){
+        return "             Transaccion{" +
+                "fecha=" + fecha.getDayOfMonth() + "/" + fecha.getMonthValue() + "/" + fecha.getYear() + " " + fecha.getHour() + ":" + fecha.getMinute() + ":" + fecha.getSecond() +
+                ", monto=" + monto +
+                ", " + tipo + " " + comment  +
+                "} Cliente: " + cuenta.getCliente().getNombre()+ ", CBU: " + cuenta.getCbu() + "\n";
+
+    }
+
     @Override
     public String toString() {
         return "             Transaccion{" +
