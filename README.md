@@ -1,1 +1,1 @@
-![Diagrama_UML_Banco.png](Diagrama_UML_Banco.png)
+![BANCO-UML-DIAGRAMA.png](BANCO-UML-DIAGRAMA.png)
