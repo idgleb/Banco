@@ -19,6 +19,8 @@ public class Corriente extends Cuenta {
         Transaccion transaccion = new Transaccion(monto, tipoTransaccion, comment, this);
         this.getTransacciones().add(transaccion);
 
+        JOptionPane.showMessageDialog(null, "Che, Depositaste " + monto + " con exito");
+
 
     }
 

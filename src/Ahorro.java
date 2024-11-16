@@ -18,6 +18,7 @@ public class Ahorro extends Cuenta {
     public void depositar() {
         double monto = MisFunciones.pedirNumeroMasCero("Ingrese el monto para depositar:");
         if (monto == -1) return;
+
         if (monto >= this.minDeposito) {
             setSaldo(getSaldo() + monto);
 
